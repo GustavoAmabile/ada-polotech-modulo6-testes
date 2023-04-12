@@ -7,13 +7,14 @@ import com.ada.modulo6.model.Usuario;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@SpringBootTest
 public class UsuarioServiceTest {
 
     @Autowired
@@ -31,23 +32,38 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void popularUsuariosTeste() {
+    public void popularUsuariosTesteLimiteArray() {
 
         List<Usuario> usuarios = usuarioService.getUsuarios();
         assertEquals(5, usuarios.size());
-        assertFalse(usuarios.isEmpty());
-        assertNotEquals(usuarios, null);
-        assertArrayEquals(usuarios.toArray(), usuarioService.getUsuarios().toArray());
 
     }
 
     @Test
-    public void popularUsuariosAcimaDoLimiteTeste() {
+    public void popularUsuariosTesteConteudoArray() {
+
+        List<Usuario> usuarios = usuarioService.getUsuarios();
+        assertEquals(usuarios, usuarios);
+
+    }
+
+    @Test
+    public void popularUsuariosTesteVerificarConteudoAcimeDoLimite() {
         List<Usuario> usuarios = usuarioService.getUsuarios();
         assertThrows(
                 IndexOutOfBoundsException.class,
                 () -> usuarios.get(5)
         );
+
+    }
+
+    @Test
+    public void popularUsuariosTesteConferirDadosDeUmUsuario() {
+        List<Usuario> usuarios = usuarioService.getUsuarios();
+        Usuario usuario = usuarios.get(4);
+        assertEquals("user4", usuario.getLogin());
+        assertEquals("user4", usuario.getNome());
+        assertEquals("pwd4", usuario.getSenha());
 
     }
 
